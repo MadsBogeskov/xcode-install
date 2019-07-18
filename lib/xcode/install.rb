@@ -254,6 +254,13 @@ HELP
       xcode = InstalledXcode.new(xcode_path)
 
       unless xcode.verify_integrity
+        out = <<-HELP
+The fetched Xcode failed validation, and has been removed. The download might 
+have been corrupted, so try to run `xcversion update` to see if the version 
+you tried to install has been pulled by Apple. If none of this is true, 
+please open a new GH issue.
+HELP
+        $stderr.puts out.tr("\n", ' ')
         `sudo rm -rf #{xcode_path}`
         return
       end
