@@ -261,7 +261,7 @@ you tried to install has been pulled by Apple. If none of this is true,
 please open a new GH issue.
 HELP
         $stderr.puts out.tr("\n", ' ')
-        `sudo rm -rf #{xcode_path}`
+        # `sudo rm -rf #{xcode_path}`
         return
       end
 
@@ -670,7 +670,15 @@ HELP
     end
 
     def verify_integrity
-      verify_app_security_assessment && verify_app_cert
+      if !verify_app_security_assessment
+        $stderr.puts 'failed security assessment'
+        false
+      elsif !verify_app_cert
+        $stderr.puts 'failed app cert'
+        false
+      else
+        true
+      end
     end
 
     :private
