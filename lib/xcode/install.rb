@@ -216,13 +216,14 @@ module XcodeInstall
       xcode_path = "/Applications/Xcode#{suffix}.app"
 
       if dmg_path.extname == '.xip'
-        `xip -x #{dmg_path}`
+        `/usr/bin/xip -x #{dmg_path}`
         xcode_orig_path = File.join(Dir.pwd, 'Xcode.app')
+        $stdout.puts xcode_orig_path
         xcode_beta_path = File.join(Dir.pwd, 'Xcode-beta.app')
         if Pathname.new(xcode_orig_path).exist?
-          `sudo -p "#{prompt}" mv "#{xcode_orig_path}" "#{xcode_path}"`
+          `cp -r "#{xcode_orig_path}" "#{xcode_path}"`
         elsif Pathname.new(xcode_beta_path).exist?
-          `sudo -p "#{prompt}" mv "#{xcode_beta_path}" "#{xcode_path}"`
+          `sudo -p "#{prompt}" cp -r "#{xcode_beta_path}" "#{xcode_path}"`
         else
           out = <<-HELP
 No `Xcode.app(or Xcode-beta.app)` found in XIP. Please remove #{dmg_path} if you
